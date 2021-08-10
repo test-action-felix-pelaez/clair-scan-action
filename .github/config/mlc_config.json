@@ -2,7 +2,7 @@
 {
     "ignorePatterns": [
       {
-        "pattern": "^http://LINK_HERE*"
+        "pattern": "^https://github.com/santander-group/clair-scan-action/*"
       }
     ]
   }

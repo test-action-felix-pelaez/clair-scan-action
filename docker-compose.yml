@@ -1,0 +1,48 @@
+version: '2.4'
+
+services:
+  postgres:
+    container_name: clair-db
+    image: postgres@sha256:fab2a4a9fa7af0464b665f90818894481b524035ddc337bf09d5321624cee644
+    networks:
+      - clair_network
+    volumes:
+      - postgres-data/:/var/lib/postgresql/data:rw
+    environment:
+      - POSTGRES_PASSWORD=clair
+      - POSTGRES_USER=clair
+      - POSTGRES_DB=clair
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U clair"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - 5432:5432
+
+  clair:
+    container_name: clair
+    networks:
+      clair_network:
+        aliases:
+          - clair
+    image: quay.io/projectquay/clair:4.0.6
+    environment:
+      - CLAIR_MODE=combo
+      - CLAIR_CONF=/config/config.yaml
+    volumes:
+      - ./config.yaml:/config/config.yaml:ro
+      - /tmp/:/tmp/
+    depends_on:
+      postgres:
+        condition: service_healthy
+    links:
+      - postgres
+    ports:
+      - 6060:6060
+
+volumes:
+  postgres-data:
+
+networks:
+  clair_network:
