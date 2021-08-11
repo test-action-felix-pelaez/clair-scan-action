@@ -22,14 +22,11 @@ pull request.
   * [Suggesting Enhancements](#suggesting-enhancements)
     * [Before Submitting An Enhancement Suggestion](#before-submitting-an-enhancement-suggestion)
     * [How Do I Submit A (Good) Enhancement Suggestion?](#how-do-i-submit-a-good-enhancement-suggestion)
-  * [Your First Code Contribution](#your-first-code-contribution)
-    * [Local development](#local-development)
   * [Pull Requests](#pull-requests)
 * [Styleguides](#styleguides)
   * [Git Commit Messages](#git-commit-messages)
   * [Documentation Styleguide](#documentation-styleguide)
 * [What do we expect from a contributor?](#what-do-we-expect-from-a-contributor)
-* [Additional Notes](#additional-notes)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -37,8 +34,8 @@ pull request.
 
 This project and everyone participating in it is governed by the
 [Code Of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to
-uphold this code. Please report unacceptable behavior to __[INSERT CONTACT EMAIL
-HERE]__.
+uphold this code. Please report unacceptable behavior to
+david.hernandezmartin@gruposantander.com.
 
 ## Prepare the environment
 
@@ -46,6 +43,22 @@ You'll get faster results by using the resources below instead of creating an
 issue to aks a question.
 
 ## What should I know before I get started?
+
+This repository stores a GitHub Action. This action needs a couple of parameters
+to execute the Clair scan. The scan is made by using the official Clair image.
+The official Clair image also requires a database where to store the rules. This
+database is another container running an official PostgreSQL instance. The rules
+needed to be loaded into the database when the image start. Loading all the
+rules could take up to 20-30 minutes and, that is why we use an input parameter
+named `updater` to only load the rules related to the image to be scanned.
+
+The Clair container and its database are defined in the `docker-compose.yml`
+file. It would be best if you had docker-compose in your runner to run this
+action.
+
+The main action logic is placed in the `action.yml` file. This file is a
+[composite action file](https://docs.github.com/en/actions/creating-actions/creating-a-composite-run-steps-action#creating-an-action-metadata-file)
+and the steps are defined there.
 
 ## How Can I Contribute?
 
@@ -57,6 +70,11 @@ report :pencil:, reproduce the behavior :computer: :computer:, and find related
 reports :mag_right:.
 
 #### Before Submitting A Bug Report
+
+Take a look at the
+[discussions](https://github.com/santander-group/clair-scan-action/discussions)
+and [issues](https://github.com/santander-group/clair-scan-action/issues)
+sections. Maybe somebody reported that.
 
 #### How Do I Submit A (Good) Bug Report?
 
@@ -74,6 +92,11 @@ understand your suggestion :pencil: and find related suggestions :mag_right:.
 
 #### Before Submitting An Enhancement Suggestion
 
+Take a look at the
+[discussions](https://github.com/santander-group/clair-scan-action/discussions)
+and [issues](https://github.com/santander-group/clair-scan-action/issues)
+sections. Maybe somebody is working on that.
+
 #### How Do I Submit A (Good) Enhancement Suggestion?
 
 Feature requests are tracked as
@@ -81,10 +104,6 @@ Feature requests are tracked as
 After you've determined this is the right repository, create an issue and
 provide the information requested in
 [new feature template](.github/ISSUE_TEMPLATE/feature_request.md).
-
-### Your First Code Contribution
-
-#### Local development
 
 ### Pull Requests
 
@@ -123,32 +142,11 @@ accepted.
 * Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
 * Limit the first line to 72 characters or less
 * Reference issues and pull requests liberally after the first line
-* When only changing documentation, include `[ci skip]` in the commit title
-* Consider starting the commit message with an applicable emoji:
-  * :art: `:art:` when improving the format/structure of the code
-  * :racehorse: `:racehorse:` when improving performance
-  * :non-potable_water: `:non-potable_water:` when plugging memory leaks
-  * :memo: `:memo:` when writing docs
-  * :penguin: `:penguin:` when fixing something on Linux
-  * :apple: `:apple:` when fixing something on macOS
-  * :checkered_flag: `:checkered_flag:` when fixing something on Windows
-  * :bug: `:bug:` when fixing a bug
-  * :fire: `:fire:` when removing code or files
-  * :green_heart: `:green_heart:` when fixing the CI build
-  * :white_check_mark: `:white_check_mark:` when adding tests
-  * :lock: `:lock:` when dealing with security
-  * :arrow_up: `:arrow_up:` when upgrading dependencies
-  * :arrow_down: `:arrow_down:` when downgrading dependencies
-  * :shirt: `:shirt:` when removing linter warnings
 
 ### Documentation Styleguide
 
 * Use [Markdown](https://daringfireball.net/projects/markdown).
-* Reference methods and classes in markdown with the custom `{}` notation:
-  * Reference classes with `{ClassName}`
-  * Reference instance methods with `{ClassName::methodName}`
-  * Reference class methods with `{ClassName.methodName}`
 
 ## What do we expect from a contributor?
 
-## Additional Notes
+Only being nice and gentle. Be your best self.
