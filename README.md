@@ -22,15 +22,15 @@ E.g.: vulnerables/web-dvwa
 
 **Required**: Path to save the report
 
-E.g.: `clairReport.xml`
+E.g.: `clairReport.json`
 
 ## `report_format`
 
 **Optional**: Report format. Values: xml | json | text
 
-**Default value**: `xml`
+**Default value**: `json`
 
-E.g.: `xml`
+E.g.: `json`
 
 ## Example usage
 
@@ -39,8 +39,8 @@ E.g.: `xml`
       with:
         updater: debian
         image: vulnerables/web-dvwa
-        report_path: clair-report.xml
-        report_format: xml
+        report_path: clair-report.json
+        report_format: json
 
 ## Getting involved
 

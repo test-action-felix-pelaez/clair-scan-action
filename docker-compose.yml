@@ -1,48 +1,40 @@
-version: '2.4'
+version: '3'
 
 services:
   postgres:
-    container_name: clair-db
-    image: postgres@sha256:fab2a4a9fa7af0464b665f90818894481b524035ddc337bf09d5321624cee644
-    networks:
-      - clair_network
-    volumes:
-      - postgres-data/:/var/lib/postgresql/data:rw
+    container_name: postgres
     environment:
       - POSTGRES_PASSWORD=clair
       - POSTGRES_USER=clair
       - POSTGRES_DB=clair
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U clair"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    ports:
-      - 5432:5432
+    #postgres:9.6.23
+    image: postgres@sha256:0c544a9de02082855b4ee592d59685403a8b51acdcd559cef4140ad9ef1396bd
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data:rw 
 
   clair:
     container_name: clair
-    networks:
-      clair_network:
-        aliases:
-          - clair
-    image: quay.io/projectquay/clair:4.0.6
-    environment:
-      - CLAIR_MODE=combo
-      - CLAIR_CONF=/config/config.yaml
-    volumes:
-      - ./config.yaml:/config/config.yaml:ro
-      - /tmp/:/tmp/
     depends_on:
-      postgres:
-        condition: service_healthy
-    links:
       - postgres
-    ports:
-      - 6060:6060
+    #clair:4.2.0
+    image: quay.io/projectquay/clair@sha256:917df97fd182bf45d880649285b45e730a52e6cca4b70e3b0a810d4e39d43c9a
+    network_mode: host 
+    restart: always
+    volumes:
+      - ./reports:/reports:rw
+      - ./config.yaml:/config/config.yaml:ro
+      - /tmp:/tmp
 
+  registry:
+    container_name: registry
+    #registry: 2.7.1
+    image: registry@sha256:42043edfae481178f07aa077fa872fcc242e276d302f4ac2026d9d2eb65b955f
+    network_mode: host
+    volumes:
+      - registry-volume:/var/lib/registry:rw
+    
 volumes:
-  postgres-data:
-
-networks:
-  clair_network:
+  postgres-volume:
+  registry-volume:
