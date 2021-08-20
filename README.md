@@ -42,6 +42,22 @@ E.g.: `json`
         report_path: clair-report.json
         report_format: json
 
+## How it works
+
+This action creates a virtual environment based on Docker containers to execute
+the Clair scan of a given image. In the next picture, you can see the pieces
+involved:
+
+![architecture](./images/clair-arch-4.2.0.png)
+
+First, the action creates the volumes needed by the containers and start them.
+The database used by Clair is populated with vulnerabilities for the given
+technology in the `updater` input parameter. Then, the action uploads the image
+indicated in the `image` parameter (it doesn't matter if it is local or not) to
+the local Docker Registry. The action call the Clair client inside the Clair
+container to run the image scan and store the result in the `report_path`
+location, with the format specified by the `report_format` parameter.
+
 ## Getting involved
 
 This project is far from being perfect, so any help is always welcome. Please,
