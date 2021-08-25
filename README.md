@@ -5,24 +5,18 @@ restricted only to a given `updater`
 
 ## Inputs
 
-## `updater`
-
-**Required**: The updater name for scanning as specified in the
-[Clair config documentation](https://github.com/quay/clair/blob/main/Documentation/reference/config.md#updaterssets)
-
-E.g.: `debian`
-
 ## `image`
 
 **Required**: Container image to analyze.
 
 E.g.: vulnerables/web-dvwa
 
-## `report_path`
+## `local`
 
-**Required**: Path to save the report
+**Optional**: It tells the action if it should perform the container image pull
+or not. Values: yes | no
 
-E.g.: `clairReport.json`
+**Default value: `yes'
 
 ## `report_format`
 
@@ -32,15 +26,29 @@ E.g.: `clairReport.json`
 
 E.g.: `json`
 
+## `report_path`
+
+**Required**: Path to save the report
+
+E.g.: `clairReport.json`
+
+## `updater`
+
+**Required**: The updater name for scanning as specified in the
+[Clair config documentation](https://github.com/quay/clair/blob/main/Documentation/reference/config.md#updaterssets)
+
+E.g.: `debian`
+
 ## Example usage
 
     - name: Clair Scan
       uses: santander-group/clair-scan-action@main
       with:
-        updater: debian
         image: vulnerables/web-dvwa
-        report_path: clair-report.json
+        local: no
         report_format: json
+        report_path: clair-report.json
+        updater: debian
 
 ## How it works
 
