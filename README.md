@@ -71,6 +71,12 @@ location, with the format specified by the `report_format` parameter.
 This project is far from being perfect, so any help is always welcome. Please,
 review our [CONTRIBUTING](CONTRIBUTING.md) file to know how to get involved.
 
+## Issues and support
+
+Reporting a bug is also a way of contributing, so you can review our
+[CONTRIBUTING](CONTRIBUTING.md) guide to know how to create a ticket or get
+help.
+
 ---
 
 ## Licensing info
