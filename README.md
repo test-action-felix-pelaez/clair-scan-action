@@ -16,7 +16,7 @@ E.g.: vulnerables/web-dvwa
 **Optional**: It tells the action if it should perform the container image pull
 or not. Values: yes | no
 
-**Default value: `yes'
+**Default value**: `yes'
 
 ## `report_format`
 
