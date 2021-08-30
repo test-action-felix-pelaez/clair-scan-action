@@ -26,7 +26,7 @@ runs:
     - run: |
         sed -i 's/SET_UPDATER/${{ inputs.updater }}/g' $GITHUB_ACTION_PATH/config.yaml
         chmod +x $GITHUB_ACTION_PATH/run.sh && $GITHUB_ACTION_PATH/run.sh
-        if [[ "${{ inputs.local }}" != "yes" ]]: then \
+        if [[ "${{ inputs.local }}" != "yes" ]]; then \
           docker pull ${{ inputs.image }}
         fi
         docker tag ${{ inputs.image }} localhost:5000/${{ inputs.image }} && docker push localhost:5000/${{ inputs.image }}
