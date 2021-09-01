@@ -1,4 +1,7 @@
 #!/bin/bash
+# params:
+#        $1: clair readiness timeout in senconds
+
 docker-compose -f $GITHUB_ACTION_PATH/docker-compose.yml up -d registry postgres
 
 timetorun=30
@@ -34,7 +37,7 @@ do
     sleep 1;
 done
 
-timetorun=120
+timetorun=$1
 stoptime=$((timetorun + $(date +%s)))
 
 echo "Checking clair status..."
@@ -56,5 +59,6 @@ do
         break;
     fi
     
-    sleep 1;
+    sleep 5;
+    echo "Waiting for Clair to be ready..."
 done

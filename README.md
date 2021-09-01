@@ -32,6 +32,15 @@ E.g.: `json`
 
 E.g.: `clairReport.json`
 
+## `clair_timeout`
+
+**Optional**: Establish the timeout in seconds while waiting for Clair to be
+ready. Useful for slower runners.
+
+**Default: value**: 120
+
+E.g.: 300
+
 ## `updater`
 
 **Required**: The updater name for scanning as specified in the

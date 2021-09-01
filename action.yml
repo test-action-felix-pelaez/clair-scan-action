@@ -16,6 +16,10 @@ inputs:
   report_path:
     description: 'Path to save the report'
     required: true
+  clair_timeout:
+    description: 'Establish the timeout in seconds while waiting for Clair to be ready, useful for slower runners'
+    required: false
+    default: 120
   updater:
     description: 'Set Updater E.G. debian'
     required: true
@@ -25,7 +29,7 @@ runs:
   steps:
     - run: |
         sed -i 's/SET_UPDATER/${{ inputs.updater }}/g' $GITHUB_ACTION_PATH/config.yaml
-        chmod +x $GITHUB_ACTION_PATH/run.sh && $GITHUB_ACTION_PATH/run.sh
+        chmod +x $GITHUB_ACTION_PATH/run.sh && $GITHUB_ACTION_PATH/run.sh ${{inputs.clair_timeout}}
         if [[ "${{ inputs.local }}" != "yes" ]]; then \
           docker pull ${{ inputs.image }}
         fi
