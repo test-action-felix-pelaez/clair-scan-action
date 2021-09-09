@@ -23,16 +23,22 @@ inputs:
   updater:
     description: 'Set Updater E.G. debian'
     required: true
-    
 runs:
   using: "composite"
   steps:
-    - run: |
-        sed -i 's/SET_UPDATER/${{ inputs.updater }}/g' $GITHUB_ACTION_PATH/config.yaml
-        chmod +x $GITHUB_ACTION_PATH/run.sh && $GITHUB_ACTION_PATH/run.sh ${{inputs.clair_timeout}}
-        if [[ "${{ inputs.local }}" != "yes" ]]; then \
-          docker pull ${{ inputs.image }}
+    - env:
+        INPUT_IMAGE: ${{ inputs.image }}
+        INPUT_LOCAL: ${{ inputs.local }}
+        INPUT_REPORT_FORMAT: ${{ inputs.report_format }}
+        INPUT_REPORT_PATH: ${{ inputs.report_path }}
+        INPUT_CLAIR_TIMEOUT: ${{ inputs.clair_timeout }}
+        INPUT_UPDATER: ${{ inputs.updater }}
+      run: |
+        sed -i "s/SET_UPDATER/${INPUT_UPDATER}/g" $GITHUB_ACTION_PATH/config.yaml
+        chmod +x $GITHUB_ACTION_PATH/run.sh && $GITHUB_ACTION_PATH/run.sh "${INPUT_CLAIR_TIMEOUT}"
+        if [[ "${INPUT_LOCAL}" != "yes" ]]; then \
+          docker pull ${INPUT_IMAGE}
         fi
-        docker tag ${{ inputs.image }} localhost:5000/${{ inputs.image }} && docker push localhost:5000/${{ inputs.image }}
-        docker exec clair clairctl -D report -o ${{ inputs.report_format }} localhost:5000/${{ inputs.image }} > ${{ inputs.report_path }}
+        docker tag ${INPUT_IMAGE} localhost:5000/${INPUT_IMAGE} && docker push localhost:5000/${INPUT_IMAGE}
+        docker exec clair clairctl -D report -o ${INPUT_REPORT_FORMAT} localhost:5000/${INPUT_IMAGE} > "${INPUT_REPORT_PATH}"
       shell: bash
