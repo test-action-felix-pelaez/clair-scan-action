@@ -23,3 +23,9 @@ and this project adheres to
 ### Added
 
 * New Clair timeout parameter to establish greater period for slower runners
+
+## 1.2.0 - 2021/09/09
+
+### Added
+
+* Improve action security by sanitazing input parameter as recommended by GitHub
